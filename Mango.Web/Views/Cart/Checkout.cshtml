@@ -1,0 +1,144 @@
+﻿@model Mango.Web.Models.DTOs.CartDto
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning" role="alert">@ViewBag.Error</div>
+}
+
+
+@if (Model != null && Model.CartDetails.Count() > 0)
+{
+
+
+
+    <form method="post">
+        <input asp-for="CartHeader.UserId" hidden />
+        <input asp-for="CartHeader.CartHeaderId" hidden />
+        <input asp-for="CartHeader.CouponCode" hidden />
+        <input asp-for="CartHeader.DiscountTotal" hidden />
+        <input asp-for="CartHeader.OrderTotal" hidden />
+        <input asp-for="CartHeader.OrderWithDiscountTotal" hidden />
+
+        <div>
+            <span style="font-size:25px;" class="text-warning">Enter details and place order :</span>
+            <br />
+        </div>
+        <div class="border mt-2">
+            <div class="container row">
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="col-form-label">First Name :</label>
+                            <input class="form-control" asp-for="CartHeader.FirstName" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Last Name :</label>
+                            <input class="form-control" asp-for="CartHeader.LastName" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Email :</label>
+                            <input class="form-control" asp-for="CartHeader.Email" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Phone :</label>
+                            <input class="form-control" asp-for="CartHeader.PhoneNumber" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">PickUp Time</label>
+                            <input class="form-control form_datetime" type="datetime-local" asp-for="CartHeader.PickupDateTime">
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Card Number :</label>
+                            <input class="form-control" asp-for="CartHeader.CardNumber" />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="col-form-label">CVV :</label>
+                            <input class="form-control" asp-for="CartHeader.CVV" />
+                        </div>
+
+                        <div class="col-12 pb-4">
+                            <label class="col-form-label">Expiry :</label>
+                            <input placeholder="MMYY" class="form-control" asp-for="CartHeader.ExpiryMonthYear" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class=" d-none d-lg-block">
+                                <div class="row text-danger">
+                                    <div class="col-6">
+                                        Product Details
+                                    </div>
+
+                                    <div class="col-3">
+                                        Price
+                                    </div>
+                                    <div class="col-3">
+                                        Count
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+
+
+
+                            @foreach (var item in Model.CartDetails.ToList())
+                            {
+
+                              
+                                ;
+                                <div class="row h-100">
+                                    <div class="col-6">
+                                        <span style="font-size:20px">@item.Product.Name</span>
+                                    </div>
+
+                                    <div class="col-3" style="font-size:11px;">
+                                        <span style="font-size:17px;"> $@item.Product.Price</span>
+
+                                    </div>
+                                    <div class="col-3" style="font-size:11px;">
+                                        <span style="font-size:17px;"> @item.Count</span>
+                                    </div>
+                                </div>
+                            }
+
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-12 text-right pr-4 text-danger">
+                                    Order Total :  $$ @Model.CartHeader.OrderTotal <br />
+                                    @if (!String.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                                    {
+                                        <div class="col-6 text-end">
+                                            <span class="text-danger" style="font-size:21px;">  Discount Total : @Model.CartHeader.DiscountTotal <br /></span>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <span class="text-danger" style="font-size:21px;">  Final Total : @Model.CartHeader.OrderWithDiscountTotal <br /></span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+
+                                <div class="col-12 ">
+                                    <button type="submit" class="btn btn-success form-control ">
+                                        <span>Place Order</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+}
+

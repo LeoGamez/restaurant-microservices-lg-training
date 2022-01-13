@@ -1,0 +1,119 @@
+﻿@model Mango.Web.Models.DTOs.CartDto
+
+  @if (Model.CartHeader != null)
+{
+    <form method="post">
+        <br />
+        <input asp-for="CartHeader.UserId" hidden />
+        <input asp-for="CartHeader.CartHeaderId" hidden />
+        <input asp-for="CartDetails" hidden />
+
+        <div class="">
+            <div class="card border mt-4 container">
+                <div class="card-header bg-dark text-light ml-0 row ">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Shopping Cart
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-action="Index" asp-controller="home" class="btn btn-outline-warning btn-sm">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class=" d-none d-lg-block">
+                        <div class="row text-info">
+                            <div class="col-lg-2">
+                            </div>
+                            <div class="col-lg-5">
+                                Product Details
+                            </div>
+                            <div class="col-lg-2">
+                                Price
+                            </div>
+                            <div class="col-lg-2">
+                                Count
+                            </div>
+                            <div class="col-lg-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    @if (Model.CartDetails != null)
+                    {
+                        @if (Model.CartDetails.Count() > 0)
+                        {
+                            foreach (var item in Model.CartDetails)
+                            {
+                                <div class="row h-100">
+                                    <div class="col-4 col-md-2 text-center py-2">
+                                        <img src="@item.Product.ImageUrl" class="rounded" width="100%" />
+                                    </div>
+                                    <div class="col-8 col-md-5">
+                                        <h5>  @item.Product.Name</h5>
+                                        <div style="font-size:11px;">  @Html.Raw(item.Product.Description)</div>
+                                    </div>
+                                    <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                        <span style="font-size:17px;">   @item.Product.Price</span>
+                                    </div>
+                                    <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                        <span style="font-size:17px;">   @item.Count</span>
+                                    </div>
+                                    <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
+                                        <button asp-action="Remove" asp-controller="cart" asp-route-id="@item.CartDetailId" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    <hr />
+                    <div class="row">
+                        @if (String.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                        {
+                            <div class="col-6">
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CouponCode" />
+                                <button type="submit" asp-action="ApplyCoupon" class="btn-success"> Apply </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-6">
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CouponCode" disabled />
+                                <button type="submit" asp-action="RemoveCoupon" class="btn-danger"> Remove </button>
+                            </div>
+                        }
+                        <div class="col-6 text-end">
+                            <span class="text-danger" style="font-size:21px;">  Order Total : @Model.CartHeader.OrderTotal <br /></span>
+                        </div>
+                        @if (!String.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                        {
+                            <div class="col-6 text-end">
+                                <span class="text-danger" style="font-size:21px;">  Discount Total : @Model.CartHeader.DiscountTotal <br /></span>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span class="text-danger" style="font-size:21px;">  Final Total : @Model.CartHeader.OrderWithDiscountTotal <br /></span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-footer row">
+                    <div class="col-6 col-md-3 offset-md-6">
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="btn btn-success form-control " asp-action="Checkout">
+                            <span>Checkout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
